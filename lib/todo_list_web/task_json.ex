@@ -1,7 +1,7 @@
 defmodule TodoListWeb.TaskJSON do
   use TodoListWeb, :view
 
-  def render("index.json", %{tasks: tasks}) do
+  def index( %{tasks: tasks}) do
     %{data: render_tasks(tasks)}
   end
 
