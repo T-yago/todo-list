@@ -15,4 +15,31 @@ defmodule TodoList.Tasks do
     |> Task.changeset(params)
     |> Repo.insert()
   end
+
+  def delete_task(id) do
+    case Ecto.UUID.cast(id) do
+      {:ok, binary_id} ->
+        case Repo.get(Task, binary_id) do
+          nil ->
+            IO.puts("Task with ID #{binary_id} not found.")
+            {:error, :not_found}
+
+          task ->
+            case Repo.delete(task) do
+              {:ok, _deleted_task} ->
+                IO.puts("Task with ID #{binary_id} deleted successfully.")
+                {:ok, task}
+
+              {:error, _changeset} ->
+                IO.puts("Error deleting the task.")
+                {:error, :delete_error}
+            end
+        end
+
+      :error ->
+        IO.puts("Invalid UUID format for ID.")
+        {:error, :invalid_uuid}
+    end
+  end
+
 end

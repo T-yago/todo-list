@@ -12,7 +12,7 @@ defmodule TodoListWeb.Router do
 
     get "/tasks", TaskController, :index
     post "/tasks", TaskController, :create
-
+    delete "/task/:id", TaskController, :delete
 
   end
 
