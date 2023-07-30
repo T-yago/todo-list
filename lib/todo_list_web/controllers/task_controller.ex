@@ -60,5 +60,22 @@ defmodule TodoListWeb.TaskController do
     end
   end
 
+  def edit(conn, %{"id" => id}) do
+    params = conn.body_params
+    case Tasks.alter(id, params) do
+      {:ok, task} ->
+        conn
+        |> put_status(:ok)
+        |> render(:index, tasks: [task])
+
+      {:error, :not_found} ->
+        conn
+        |> put_status(:not_found)
+
+      {:error, :invalid_uuid} ->
+        conn
+        |> put_status(:bad_request)
+    end
+  end
 
 end
