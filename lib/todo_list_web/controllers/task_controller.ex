@@ -42,4 +42,23 @@ defmodule TodoListWeb.TaskController do
         |> send_resp(:internal_server_error, "")
     end
   end
+
+  def update(conn, %{"id" => id}) do
+    case Tasks.complete_task(id) do
+      {:ok, task} ->
+        conn
+        |> put_status(:ok)
+        |> render(:index, tasks: [task])
+
+      {:error, :not_found} ->
+        conn
+        |> put_status(:not_found)
+
+      {:error, :invalid_uuid} ->
+        conn
+        |> put_status(:bad_request)
+    end
+  end
+
+
 end

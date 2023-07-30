@@ -15,11 +15,8 @@ defmodule TodoList.Task do
     IO.inspect(task, label: "Task Before Changeset")
     IO.inspect(params, label: "Changeset Params")
 
-    # Extract the "task" parameters from the received params
-    task_params = Map.get(params, "task", %{})
-
     task
-    |> cast(task_params, [:name, :description, :status])
+    |> cast(params, [:name, :description, :status])
     |> validate_required([:name, :description])
     |> IO.inspect(label: "Changeset Errors")
   end

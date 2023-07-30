@@ -42,4 +42,31 @@ defmodule TodoList.Tasks do
     end
   end
 
+  def complete_task(id) do
+    case Ecto.UUID.cast(id) do
+      {:ok, binary_id} ->
+        case Repo.get(Task, binary_id) do
+          nil ->
+            {:error, :not_found}
+
+          task ->
+            changeset = Task.changeset(task, %{"status" => "Completed"})
+            case Repo.update(changeset) do
+              {:ok, updated_task} ->
+                {:ok, updated_task}
+
+              {:error, _changeset} ->
+                {:error, task}
+            end
+        end
+
+      :error ->
+        {:error, :invalid_uuid}
+    end
+  end
+
+
+
+
+
 end
